@@ -1,6 +1,7 @@
 package pl.schibsted.mateuszderks.findme;
 
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -22,10 +23,9 @@ public class LoadFeedData extends AsyncTask<Void, Void, ArrayList<Room>> {
     private final String mUrl =
             "https://agile-brushlands-2260.herokuapp.com:443/api/v1/rooms?only_public=false";
 
-    private final ArrayAdapter mAdapter;
+    private final RoomsAdapter mAdapter;
 
-    public LoadFeedData(ArrayAdapter adapter) {
-        Log.v("DUPA", "Adapter");
+    public LoadFeedData(RoomsAdapter adapter) {
         mAdapter = adapter;
     }
 
@@ -47,8 +47,6 @@ public class LoadFeedData extends AsyncTask<Void, Void, ArrayList<Room>> {
 
     @Override
     protected ArrayList<Room> doInBackground(Void... params) {
-        Log.v("DUPA", "InBackground");
-
         InputStream source = retrieveStream(mUrl);
         BufferedReader reader = null;
         try {
@@ -80,13 +78,11 @@ public class LoadFeedData extends AsyncTask<Void, Void, ArrayList<Room>> {
         }
 
         ArrayList<Room> result = Room.fromJson(array);
-        Log.v("DUPA", result.toString());
         return result;
     }
 
     @Override
     protected void onPostExecute(ArrayList<Room> rooms) {
-        Log.v("DUPA", rooms.toString());
         mAdapter.addAll(rooms);
     }
 }

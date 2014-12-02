@@ -1,34 +1,41 @@
 package pl.schibsted.mateuszderks.findme;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class RoomsAdapter extends ArrayAdapter<Room> {
-    public RoomsAdapter(Context context, int resource) {
-        super(context, resource);
+import java.util.ArrayList;
+
+public class RoomsAdapter extends RecyclerView.Adapter<ViewHolder> {
+    ArrayList<Room> items = new ArrayList<Room>();
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View itemView = LayoutInflater
+                .from(viewGroup.getContext())
+                .inflate(R.layout.item_room, viewGroup, false);
+
+        return new ViewHolder(itemView);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
-        Room room = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
-        ViewHolder viewHolder;
-        if (convertView == null) {
-            viewHolder = new ViewHolder();
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.item_room, parent, false);
-            viewHolder.name = (TextView) convertView.findViewById(R.id.room_name);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
+    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+        Room room = items.get(i);
 
         viewHolder.name.setText(room.name);
-        return convertView;
+    }
+
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
+
+    public void addAll(ArrayList<Room> list) {
+        items.addAll(list);
+        notifyDataSetChanged();
     }
 }
