@@ -9,8 +9,36 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.ArrayList;
 
+import pl.schibsted.mateuszderks.findme.Resource.RoomApi;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 public class RoomsAdapter extends RecyclerView.Adapter<ViewHolder> {
     List<Room> items = new ArrayList<Room>();
+
+    RoomsAdapter() {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint("https://agile-brushlands-2260.herokuapp.com/api/v1")
+                .build();
+
+        RoomApi roomApi = restAdapter.create(RoomApi.class);
+
+        Callback<List<Room>> callback = new Callback<List<Room>>() {
+            @Override
+            public void success(List<Room> o, Response response) {
+                addAll(o);
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+
+            }
+        };
+
+        roomApi.list(callback);
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -25,7 +53,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Room room = items.get(i);
 
-        viewHolder.name.setText(room.name);
+        viewHolder.name.setText(room.name + " - " + room.id);
     }
 
     @Override

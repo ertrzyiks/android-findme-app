@@ -19,9 +19,5 @@ public class MainActivity extends ActionBarActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-
-
-        LoadFeedData loadFeedData = new LoadFeedData(adapter);
-        loadFeedData.execute();
     }
 }
