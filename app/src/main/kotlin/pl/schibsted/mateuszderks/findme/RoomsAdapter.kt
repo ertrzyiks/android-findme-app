@@ -21,10 +21,12 @@ public class RoomsAdapter : RecyclerView.Adapter<ViewHolder>() {
         val restAdapter = RestAdapter.Builder().setEndpoint("https://agile-brushlands-2260.herokuapp.com/api/v1").build()
 
         val roomApi = restAdapter.create<RoomApi>(javaClass<RoomApi>())
-        val inter = Observable.interval(1, TimeUnit.SECONDS).timestamp()
+        val inter = Observable.interval(300, TimeUnit.MILLISECONDS).timestamp()
         val api = roomApi.list().map { it.reverse() }.flatMap { Observable.from(it) }
 
-        Observable.zip(inter, api, {(time: Timestamped<Long>, room: Room) -> Pair(time, room) }).observeOn(AndroidSchedulers.mainThread())
+        Observable
+                .zip(inter, api, {(time: Timestamped<Long>, room: Room) -> Pair(time, room) })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     println("Received room item ${it.second} at ${DateFormat.format("HH:mm:ss", it.first.getTimestampMillis())}")
                     items.add(0, it.second)
