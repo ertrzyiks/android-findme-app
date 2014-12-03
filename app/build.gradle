@@ -32,4 +32,5 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.8.0'
     compile 'org.jetbrains.kotlin:kotlin-stdlib:0.9.976'
     compile 'io.reactivex:rxandroid:0.22.0'
+    compile 'com.google.android.gms:play-services:4.2.42'
 }

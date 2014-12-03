@@ -17,19 +17,24 @@ import rx.schedulers.Timestamped
 import android.text.format.DateFormat
 
 public class RoomsAdapter : RecyclerView.Adapter<ViewHolder>() {
+    val items: MutableList<Room> = arrayListOf();
+
     {
-        val restAdapter = RestAdapter.Builder().setEndpoint("https://agile-brushlands-2260.herokuapp.com/api/v1").build()
+        val restAdapter = RestAdapter
+                .Builder()
+                .setEndpoint("https://agile-brushlands-2260.herokuapp.com/api/v1")
+                .build()
 
         val roomApi = restAdapter.create<RoomApi>(javaClass<RoomApi>())
-        val inter = Observable.interval(300, TimeUnit.MILLISECONDS).timestamp()
-        val api = roomApi.list().map { it.reverse() }.flatMap { Observable.from(it) }
 
-        Observable
-                .zip(inter, api, {(time: Timestamped<Long>, room: Room) -> Pair(time, room) })
+        println("CONNECTION");
+
+        roomApi
+                .list()
+                .flatMap { Observable.from(it) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    println("Received room item ${it.second} at ${DateFormat.format("HH:mm:ss", it.first.getTimestampMillis())}")
-                    items.add(0, it.second)
+                    items.add(0, it)
                     notifyItemInserted(0)
                 }) {
                     println("Error ${it.getMessage()}")
@@ -37,25 +42,23 @@ public class RoomsAdapter : RecyclerView.Adapter<ViewHolder>() {
                 }
     }
 
-    val items: MutableList<Room> = arrayListOf()
-
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_room, viewGroup, false)
 
-        return ViewHolder(itemView)
+        return ViewHolder(itemView);
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        val room = items.get(i)
+        val room = items.get(i);
 
-        viewHolder.name.setText(room.name + " - " + room.id)
+        viewHolder.name.setText(room.name);
     }
 
     override fun getItemCount(): Int {
-        return items.size()
+        return items.size();
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView by bindView(R.id.room_name)
+        val name: TextView by bindView(R.id.room_name);
     }
 }

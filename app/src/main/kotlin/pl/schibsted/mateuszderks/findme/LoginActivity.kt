@@ -11,20 +11,25 @@ import android.content.Intent
 import pl.schibsted.mateuszderks.findme.resource.RoomApi
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
-import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.*;
 
-public class MainActivity : ActionBarActivity() {
+public class LoginActivity : ActionBarActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
-        val map = (getFragmentManager().findFragmentById(R.id.map) as MapFragment).getMap();
+        val button:Button = findViewById(R.id.button) as Button;
 
-        val sydney = LatLng(-33.867, 151.206);
 
-        map.setMyLocationEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13.0f));
+        button.setOnClickListener(object: View.OnClickListener {
+            override fun onClick(view: View): Unit {
+                switchToMain();
+            }
+        });
+    }
+
+    fun switchToMain(): Unit {
+        val myIntent: Intent = Intent(this, javaClass<MainActivity>());
+        startActivity(myIntent);
     }
 }
