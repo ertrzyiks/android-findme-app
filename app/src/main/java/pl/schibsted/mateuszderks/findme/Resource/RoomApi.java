@@ -1,4 +1,4 @@
-package pl.schibsted.mateuszderks.findme.Resource;
+package pl.schibsted.mateuszderks.findme.resource;
 
 import java.util.List;
 
