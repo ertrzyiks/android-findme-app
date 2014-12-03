@@ -4,10 +4,11 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:focusable="true"
+        android:gravity="center"
         android:clickable="true"
         android:background="?android:attr/selectableItemBackground"
         android:text="New Text"
